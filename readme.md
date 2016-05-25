@@ -110,9 +110,33 @@ The Neopixel device requires specific timings that can't be reach when using the
 ## Tools
 Before starting some tools are required :
 
+* [Arduino IDE](https://www.arduino.cc/en/Main/Software)
 * [Visual Studio Community 2013 with Update 5](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)
 * [VisualMicro](http://www.visualmicro.com/) a VS2013 plugin for Arduino development
-* USBTinyISP
+* USBTinyISP programer
+
+Install the Arduino IDE application, and launch the application. You first need to add the support of the ATtiny familly as by default only Arduino based platforms are supported. From the File menu, select the Preferences submenu, and then find the “Additional Boards Manager URLs” field near the bottom of the dialog. Add the following url : https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json
+You can then validate and close the preferences dialog box. Then from the Tools menu you have to :
+
+* Select **ATtiny** as Board
+* Select **ATtiny85** as Processor
+* Select **8MHz (Internal)** as Clock
+* Select **USBtinyISP** as Programmer
+
+Close the **Arduino IDE** application and install the Visual Micro plugin for Visual Studio.
+Launch **Visual Studio** and open the BlinkyBike.sln from the project folders.
+On first usage of Visual Micro, you have to configure the various parameters of the plugin.
+
+* Select the version of the IDE you select
+* Enter the path to the tool installation folder
+
+Then validate the configuration window and access the Visual Studio IDE. From vMicro menu :
+
+* Select **ATtiny w/ ATtiny85** as Board
+* Select **8MHz (Internal)** as Option2
+* Select **USBtinyISP** as Programmer
+
+The development environment is now ready for building and flashing.
 
 ## Compilation
 The source code compiles in VS2013 through the VisualMicro plugin.
