@@ -1,5 +1,5 @@
 # Blinky Bike
-The Blinky Bike project is an ultimate solution to add lightning system to any Bike, ( and electric Bike) using a 5V power bank or the bike Battery. It relies on NeoPixel LEDs (WS8212) flexible stripes. The system based on an Atmel ATTiny 85 micro-controller, allows different light modes that can be selected using two water proof switches (One for the Left hand and one for the Right hand).
+The Blinky Bike project is an ultimate solution to add lightning system to any Bike, ( and electric Bike) using a 5V power bank or the bike Battery. It relies on NeoPixel LEDs (WS2812) flexible stripes. The system based on an Atmel ATTiny 85 micro-controller, allows different light modes that can be selected using two water proof switches (One for the Left hand and one for the Right hand).
 
 ## Device Usage
 The device Left and Right buttons are the only interface with the system allowing to :
@@ -25,7 +25,7 @@ The Front and Rear LEDs stripes are composed of a total of 30 LEDs, 8 for the Fr
 ![BlinkyBike Schematic](/Pictures/FrontBack_Stripes_On.jpg "Front and Rear Stripes")
 
 ## Power consideration
-The system is designed to be power friendly with the e-Bike battery, as the battery might not be able to provide the full power required to have all the LEDs turned on at the same time. As the NeoPixel RGB LEDs (WS8212) consumes 20 mA per color channel, with a total of 60 mA (3 channels * 20 mA) when the LED is turned full bright White color (Red = 255, Green = 255, Blue = 255). The challenge is to not be over 500 mA (power limit supplied by the Battery on my e-Bike). I have applied a secure level set to 450 mA maximum. Leading then to a limit of 7 LEDs active at a time.
+The system is designed to be power friendly with the e-Bike battery, as the battery might not be able to provide the full power required to have all the LEDs turned on at the same time. As the NeoPixel RGB LEDs (WS2812) consumes 20 mA per color channel, with a total of 60 mA (3 channels * 20 mA) when the LED is turned full bright White color (Red = 255, Green = 255, Blue = 255). The challenge is to not be over 500 mA (power limit supplied by the Battery on my e-Bike). I have applied a secure level set to 450 mA maximum. Leading then to a limit of 7 LEDs active at a time.
 Having only 7 LEDs is really limitating for a bike light system, so the solution is to multiplex the LEDs and ensure that only those 7 LEDs are on, while all the others are off. If the multiplexing switch is performed fast enough, it should be possible to make it not visible for a Human eye. 
 Therefore, the ATTiny firmware is taking care of the current limitation by switching on and off the LEDs, remaining only 7 LEDs on at a time, giving a maximum power consumption for the LEDs of 420 mA.
 
