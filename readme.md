@@ -139,21 +139,33 @@ Then validate the configuration window and access the Visual Studio IDE. From vM
 The development environment is now ready for building and flashing.
 
 ## Compilation
-The source code compiles in VS2013 through the VisualMicro plugin.
+The source code compiles in Visual Studio 2013 and 2015 through the VisualMicro plugin.
 
 ## Programming
 The ATTiny 85 micro controller can be programmed using the USBTinyISP programmer.
+![USB Tiny ISP](/Pictures/USBtinyISP.jpg "USB Tiny ISP")
 
 # Assembling
 ## Left and Right Button
+The Left and Right waterproof buttons are the interface for the BlinkyBike Light System management, as described earlier. It is suggested to mount them close to the Grip and Shifter to avoid ridding distractions. So for this reason, I mount them next to the shifter screw, using a stainless and steal pad as illustrated on the first fourth pictures.
+
 ![BlinkyBike Left Button](/Pictures/Button_Left1.jpg "Left Button") ![BlinkyBike Right Button](/Pictures/Button_Right1.jpg "Right Button")
 ![BlinkyBike Left Button](/Pictures/Button_Left2.jpg "Left Button") ![BlinkyBike Right Button](/Pictures/Button_Right2.jpg "Right Button")
 
-## PCB
-![BlinkyBike PCB](/Pictures/BlinkyBike_PCB.jpg "PCB")
+## Front and Rear LED Stripes
+To ensure a good visibility of the light, I would suggest you to stick the stripes on the Frame of the bike. For the Rear, you can use the rear frame parts that are holding the rear wheel, there is usually 15 to centimeters free, between the brake and the wheel bolt. For the Front, the head tube is the ideal spot, but you have to ensure that no brake cable is hiding even partially the LED stripe.
 
-## Casing
+![Rear Full On](/Pictures/Rear_Stripes_On.png "Rear Full On") ![Rear Blink](/Pictures/Rear_Stripes_Blink.png "Rear Blink")
+
+## System Casing
+The PCB is small enough to fit in an aspirin tube, that have hermetic cap. Only four holes are required to get the buttons, LED stripes and power cords to get in. To maintain the packaging hermetic, then you can use hot glue inside the cap.
+Once done, and enclosed correctly the tube is small enough to get fixed under the handlebar using plastic ties.
+
+![BlinkyBike PCB](/Pictures/BlinkyBike_PCB.jpg "PCB")
 ![BlinkyBike Casing](/Pictures/BlinkyBike_Casing.jpg "Casing")
+
+## Battery holder
+The device is 5 Volts powered, so a USB Power Bank of 10000 mAh is a perfect solution for 3 weeks of daily commute. You can find small devices at you favorite store.
 
 ## Full System
 ![BlinkyBike Assembled](/Pictures/BlinkyBike_Assembled.jpg "Assembled")
