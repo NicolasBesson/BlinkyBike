@@ -1,5 +1,8 @@
-# Blinky Bike
-The Blinky Bike project is an ultimate solution to add lightning system to any Bike, ( and electric Bike) using a 5V power bank or the bike Battery. It relies on NeoPixel LEDs (WS2812) flexible stripes. The system based on an Atmel ATTiny 85 micro-controller, allows different light modes that can be selected using two water proof switches (One for the Left hand and one for the Right hand).
+![BlinkyBike Logo](/Pictures/BlinkyBike_logo_small.jpg "Blinky Bike Logo")
+
+When ridding for your commute or for pleasure, being visible on the road is always a nightmare, as either your bike light system in daylight is not visible, or because drivers never know when you turn in night conditions.
+
+The Blinky Bike project is the ultimate solution to add light system to any Bike, (and electric Bike) using a 5V power bank or the onboard bike Battery. It relies on NeoPixel LEDs (WS2812) flexible stripes, for the Front and Rear. The system based on an Atmel ATtiny 85 micro-controller, and allows different light modes that can be selected using two water proof switches (One for the Left hand and one for the Right hand).
 
 ## Device Usage
 The device Left and Right buttons are the only interface with the system allowing to :
