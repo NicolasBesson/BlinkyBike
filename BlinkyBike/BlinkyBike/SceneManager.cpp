@@ -324,8 +324,22 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		break;
 
 	case STATE_TURN_LEFT:
+		if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			newState = STATE_TURN_RIGHT;
+		}
+		else if (timer - timerStart > timerDuration)
+		{
+			newState = STATE_LIGHT_OFF;
+		}
+		break;
+
 	case STATE_TURN_RIGHT:
-		if (timer - timerStart > timerDuration)
+		if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			newState = STATE_TURN_LEFT;
+		}
+		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_OFF;
 		}
@@ -364,8 +378,22 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		break;
 
 	case STATE_LIGHT_AND_TURN_LEFT:
+		if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			newState = STATE_LIGHT_AND_TURN_RIGHT;
+		}
+		else if (timer - timerStart > timerDuration)
+		{
+			newState = STATE_LIGHT_ON;
+		}
+		break;
+
 	case STATE_LIGHT_AND_TURN_RIGHT:
-		if (timer - timerStart > timerDuration)
+		if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			newState = STATE_LIGHT_AND_TURN_LEFT;
+		}
+		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_ON;
 		}
