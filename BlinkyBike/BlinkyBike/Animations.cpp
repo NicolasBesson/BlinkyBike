@@ -36,32 +36,8 @@ AnimationRear animationRearTurn = { &stepOrangeRear, &animatonRearTurnOff };
 /*
  * Animations Steps
  */
-AnimationStepFront stepWhiteFront = { 150,
-{ 
-	COLOR_PIXEL(WHITE) 
-}
-};
-
-AnimationStepFront stepBlackFront = { 50,
-{ 
-	COLOR_PIXEL(BLACK) 
-}
-};
-
-AnimationStepRear stepOrangeRear = { 1000,
-{ 
-	COLOR_PIXEL(ORANGE)
-}
-};
-
-AnimationStepRear stepBlackRear = { 1000,
-{ 
-	COLOR_PIXEL(BLACK)
-}
-};
-
-AnimationStepRear stepRedRear = { 1000,
-{ 
-	COLOR_PIXEL(RED)
-}
-};
+AnimationStepFront stepWhiteFront = { 150, COLOR_PIXEL(WHITE) };
+AnimationStepFront stepBlackFront = { 50, COLOR_PIXEL(BLACK) };
+AnimationStepRear stepOrangeRear = { 1000, COLOR_PIXEL(ORANGE) };
+AnimationStepRear stepBlackRear = { 1000, COLOR_PIXEL(BLACK) };
+AnimationStepRear stepRedRear = { 1000, COLOR_PIXEL(RED) };

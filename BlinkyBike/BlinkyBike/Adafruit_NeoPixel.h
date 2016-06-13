@@ -57,6 +57,9 @@
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
 #define NEO_RBG  ((0 << 6) | (0 << 4) | (2 << 2) | (1))
 #endif
+#define NEO_GRB_RED_OFFSET  1
+#define NEO_GRB_GREEN_OFFSET  0
+#define NEO_GRB_BLUE_OFFSET  2
 #define NEO_GRB  ((1 << 6) | (1 << 4) | (0 << 2) | (2))
 #ifndef BLINKY_BIKE_OPTIMIZATION
 #define NEO_GBR  ((2 << 6) | (2 << 4) | (0 << 2) | (1))
@@ -135,7 +138,7 @@ class Adafruit_NeoPixel {
 	setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
 #else
     setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
-	setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w),
+	  setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w),
     setPixelColor(uint16_t n, uint32_t c),
 #endif
     setBrightness(uint8_t),

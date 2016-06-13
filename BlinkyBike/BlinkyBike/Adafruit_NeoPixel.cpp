@@ -1073,13 +1073,13 @@ void Adafruit_NeoPixel::setPixelColor(
 void Adafruit_NeoPixel::setPixelColor(
 	uint16_t n, uint8_t r, uint8_t g, uint8_t b) {
 
-	if (n < numLEDs) {
-		uint8_t *p;
-		p = &pixels[n * 3];    // 3 bytes per pixel
-		p[rOffset] = r;        // R,G,B always stored
-		p[gOffset] = g;
-		p[bOffset] = b;
-	}
+  uint8_t *p;
+  p = &pixels[n * 3];    // 3 bytes per pixel
+  // Offset ordered for compile optimisation
+  p[NEO_GRB_GREEN_OFFSET] = g;
+  p[NEO_GRB_RED_OFFSET] = r;
+  p[NEO_GRB_BLUE_OFFSET] = b;
+
 }
 #endif
 

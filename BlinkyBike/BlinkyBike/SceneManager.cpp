@@ -160,19 +160,11 @@ void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_N
 	currentFrontLEDIndex = (++currentFrontLEDIndex) % LED_STRIPE_FRONT_NUMLED;
 
 	// Update pixels
-#if NOT_OPTIMIZED
-	for (uint8_t i = 0; i < LED_STRIPE_FRONT_ON; i++)
-	{
-		pixel = &frontAnimation->animationStep->Pixels[(currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED];
-		frontStripe->setPixelColor((currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
-	}
-#else
-	pixel = &(frontAnimation->animationStep->Pixels[0]);
+	pixel = &(frontAnimation->animationStep->Pixels);
 	for (uint8_t i = 0; i < LED_STRIPE_FRONT_ON; i++)
 	{
 		frontStripe->setPixelColor((currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
 	}
-#endif
 
 	// Rear Left and Right
 	// Clear current index light
@@ -184,27 +176,16 @@ void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_N
 	currentRearLEDIndex = (++currentRearLEDIndex) % LED_STRIPE_REARLEFT_NUMLED;
 
 	// Update pixels for rear left and right
-#if NOT_OPTIMIZED
-	for (uint8_t i = 0; i < LED_STRIPE_REAR_ON; i++)
-	{
-		pixel = &rearLeftAnimation->animationStep->Pixels[(currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED];
-		rearLeftStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
-
-		pixel = &rearRightAnimation->animationStep->Pixels[(currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED];
-		rearRightStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
-	}
-#else
 	for (uint8_t i = 0; i < LED_STRIPE_REAR_ON; i++)
 	{
 		// Left
-		pixel = &(rearLeftAnimation->animationStep->Pixels[0]);
+		pixel = &(rearLeftAnimation->animationStep->Pixels);
 		rearLeftStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
 		
 		// Right
-		pixel = &(rearRightAnimation->animationStep->Pixels[0]);
+		pixel = &(rearRightAnimation->animationStep->Pixels);
 		rearRightStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
 	}
-#endif
 }
 
 /// <summary>
