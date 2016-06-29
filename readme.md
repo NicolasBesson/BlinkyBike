@@ -49,7 +49,7 @@ The types are described as following :
 struct AnimationStepFront
 {
 	unsigned long StepDuration;	// Step Duration in ms
-	PixelColor Pixels[1];		// Step Pixels color
+	PixelColor Pixels;		// Step Pixels color
 };
 
 struct AnimationFront
@@ -61,17 +61,8 @@ struct AnimationFront
 
 And an animation is described as following :
 ```c
-AnimationStepFront stepWhiteFront = { 150,
-{ 
-	COLOR_PIXEL(WHITE) 
-}
-};
-
-AnimationStepFront stepBlackFront = { 50,
-{ 
-	COLOR_PIXEL(BLACK) 
-}
-};
+AnimationStepFront stepWhiteFront = { 150, COLOR_PIXEL(WHITE) };
+AnimationStepFront stepBlackFront = { 50, COLOR_PIXEL(BLACK) };
 
 /* Animations for Front */
 AnimationFront animationFrontOff = { &stepBlackFront, &animationFrontOff };
@@ -114,11 +105,11 @@ The Neopixel device requires specific timings that can't be reach when using the
 Before starting some tools are required :
 
 * [Arduino IDE](https://www.arduino.cc/en/Main/Software)
-* [Visual Studio Community 2013 with Update 5](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx) or Visual Studio 2015 Community Edition
+* Visual Studio 2015 Community Edition (and other flavors)
 * [VisualMicro](http://www.visualmicro.com/) a Visual Studio plugin for Arduino development
 * USBTinyISP programer
 
-Install Visual Studio 2013/2015, and make sure to select the support for C++ (Visual C++) during installation.
+Install Visual Studio 2015, and make sure to select the support for C++ (Visual C++) during installation.
 
 Install the Arduino IDE application, and launch the application. You first need to add the support of the ATtiny familly as by default only Arduino based platforms are supported. From the File menu, select the Preferences submenu, and then find the “Additional Boards Manager URLs” field near the bottom of the dialog. Add the following url : https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json
 You can then validate and close the preferences dialog box. Then from the Tools menu you have to :
@@ -145,10 +136,21 @@ Then validate the configuration window and access the Visual Studio IDE. From vM
 The development environment is now ready for building and flashing.
 
 ## Compilation
-The source code compiles in Visual Studio 2013 and 2015 through the VisualMicro plugin.
+The source code compiles in Visual Studio 2015 using the VisualMicro plugin and Arduino IDE (cf Tools chapter for installation details).
+To compile the project you have to :
+
+* Open the BlinkyBike\BlinkyBike.sln solution file
+* From Visual Studio, select **Build** menu and choose **Configuration Manager** entry
+* From the Configuration Manager window, select **Release** in the **Active solution confgiuration** drop box
+* Click on the Close button to close the Configuration Manager window
+* From **Build** menu select **Build Solution** entry
+* Wait few seconds (usualy less than 30 seconds)
+* Ensure that the last output from the Output window is : *Program size: 5,476 bytes (used 67% of a 8,192 byte maximum) (17.83 secs)* (values may vary)
+
+Then you are ready to program your ATtiny 85.
 
 ## Programming
-The ATtiny 85 micro controller can be programmed using the USBTinyISP programmer. THe programmer is visible through a serial com port. You need to identify the associate port index (using Windows Device Manager) in order configure the Visual Micro plugin. 
+The ATtiny 85 micro controller can be programmed using the USBTinyISP programmer. The programmer is visible through a serial com port. You need to identify the associate port index (using Windows Device Manager) in order configure the Visual Micro plugin. 
 
 ![USB Tiny ISP](/Pictures/USBtinyISP.jpg "USB Tiny ISP")
 
@@ -176,7 +178,7 @@ Once done, and enclosed correctly the tube is small enough to get fixed under th
 ![BlinkyBike Casing](/Pictures/BlinkyBike_Casing.jpg "Casing")
 
 ## Battery holder
-The device is 5 Volts powered, so a USB Power Bank of 10000 mAh is a perfect solution for 3 weeks of daily commute. You can find small devices at you favorite store.
+The device is 5 Volts powered, so a USB Power Bank of 10000 mAh is a perfect solution for 3 weeks of daily commute. You can find small battery devices at your favorite store.
 
 ## Full System
 ![BlinkyBike Assembled](/Pictures/BlinkyBike_Assembled.jpg "Assembled")
