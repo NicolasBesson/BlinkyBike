@@ -269,6 +269,7 @@ inline void SceneManagerClass::TurnRight()
 void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightButton)
 {
 	unsigned long timer = millis();
+	bool extendState = false;
 
 	// Check transition candidates based on the Button pressed
 	switch (currentState)
@@ -313,6 +314,10 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		{
 			newState = STATE_TURN_RIGHT;
 		}
+		else if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			extendState = true;
+		}
 		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_OFF;
@@ -323,6 +328,10 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
 		{
 			newState = STATE_TURN_LEFT;
+		}
+		else if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			extendState = true;
 		}
 		else if (timer - timerStart > timerDuration)
 		{
@@ -367,6 +376,10 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		{
 			newState = STATE_LIGHT_AND_TURN_RIGHT;
 		}
+		else if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			extendState = true;
+		}
 		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_ON;
@@ -378,6 +391,10 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		{
 			newState = STATE_LIGHT_AND_TURN_LEFT;
 		}
+		else if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			extendState = true;
+		}
 		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_ON;
@@ -386,7 +403,8 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 	}
 
 	// Stay in current state nothing else to do
-	if (currentState == newState) 
+	if (currentState == newState || 
+		extendState == false) 
 	{
 		return;
 	}
@@ -403,20 +421,26 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 
 	case STATE_TURN_LEFT:
 	case STATE_LIGHT_AND_TURN_LEFT:
-		// Enable timer
+		// Enable timer and extend timer on extendState
 		timerStart = timer;
 		timerDuration = STATE_TURN_DURATION;
-		// Start turn left animation
-		TurnLeft();
+		// Start turn left animation only if required
+		if (extendState == false)
+		{
+			TurnLeft();
+		}
 		break;
 
 	case STATE_TURN_RIGHT:
 	case STATE_LIGHT_AND_TURN_RIGHT:
-		// Enable timer
+		// Enable timer and extend timer on extendState
 		timerStart = timer;
 		timerDuration = STATE_TURN_DURATION;
-		// Start turn right animation
-		TurnRight();
+		// Start turn right animation only if required
+		if (extendState == false)
+		{
+			TurnRight();
+		}
 		break;
 
 	case STATE_LIGHT_ON_LOCK:
