@@ -83,7 +83,7 @@ ButtonState Button::getButtonState()
 	{
 	}
 
-	if (stateStartTime != -1)
+	if (stateStartTime != (unsigned long)-1)
 	{
 		if (millis() - stateStartTime > stateRemainsThreshold)
 		{
@@ -177,7 +177,7 @@ bool Button::isPressed(void)
 		//note that the state did not change
 		bitWrite(state, CHANGED, false);
 		//should we trigger a onHold event?
-		if (pressedStartTime != -1 && (bitRead(state, HOLD) == false))
+		if (pressedStartTime != (unsigned long)-1 && (bitRead(state, HOLD) == false))
 		{
 			if (millis() - pressedStartTime > holdThreshold)
 			{

@@ -57,8 +57,14 @@
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
 #define NEO_RBG  ((0 << 6) | (0 << 4) | (2 << 2) | (1))
 #endif
-#define NEO_GRB  ((1 << 6) | (1 << 4) | (0 << 2) | (2))
+// Hard coding the Red, Green and Blue composant for compiler optimisation
+// See Adafruit_NeoPixel::setPixelColor function if OFFSETS changed to match your LED Stripe
+#define NEO_GRB_GREEN_OFFSET	0
+#define NEO_GRB_RED_OFFSET		1
+#define NEO_GRB_BLUE_OFFSET		2
+#define NEO_GRB  ((1 << 6) | (NEO_GRB_RED_OFFSET << 4) | (NEO_GRB_GREEN_OFFSET << 2) | (NEO_GRB_BLUE_OFFSET))
 #ifndef BLINKY_BIKE_OPTIMIZATION
+#define NEO_GRB  ((1 << 6) | (1 << 4) | (0 << 2) | (2))
 #define NEO_GBR  ((2 << 6) | (2 << 4) | (0 << 2) | (1))
 #define NEO_BRG  ((1 << 6) | (1 << 4) | (2 << 2) | (0))
 #define NEO_BGR  ((2 << 6) | (2 << 4) | (1 << 2) | (0))
@@ -135,13 +141,15 @@ class Adafruit_NeoPixel {
 	setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
 #else
     setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
-	setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w),
+	  setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w),
     setPixelColor(uint16_t n, uint32_t c),
-#endif
+
     setBrightness(uint8_t),
     clear(),
-    updateLength(uint16_t n),
+#endif
+	  updateLength(uint16_t n),
     updateType(neoPixelType t);
+#ifdef BLINKY_BIKE_OPTIMIZATION
   uint8_t
    *getPixels(void) const,
     getBrightness(void) const;
@@ -152,6 +160,7 @@ class Adafruit_NeoPixel {
     Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w);
   uint32_t
     getPixelColor(uint16_t n) const;
+#endif
   inline bool
     canShow(void) { return (micros() - endTime) >= 50L; }
 

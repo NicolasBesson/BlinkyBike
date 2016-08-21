@@ -160,19 +160,11 @@ void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_N
 	currentFrontLEDIndex = (++currentFrontLEDIndex) % LED_STRIPE_FRONT_NUMLED;
 
 	// Update pixels
-#if NOT_OPTIMIZED
-	for (uint8_t i = 0; i < LED_STRIPE_FRONT_ON; i++)
-	{
-		pixel = &frontAnimation->animationStep->Pixels[(currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED];
-		frontStripe->setPixelColor((currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
-	}
-#else
-	pixel = &(frontAnimation->animationStep->Pixels[0]);
+	pixel = &(frontAnimation->animationStep->Pixels);
 	for (uint8_t i = 0; i < LED_STRIPE_FRONT_ON; i++)
 	{
 		frontStripe->setPixelColor((currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
 	}
-#endif
 
 	// Rear Left and Right
 	// Clear current index light
@@ -184,27 +176,16 @@ void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_N
 	currentRearLEDIndex = (++currentRearLEDIndex) % LED_STRIPE_REARLEFT_NUMLED;
 
 	// Update pixels for rear left and right
-#if NOT_OPTIMIZED
-	for (uint8_t i = 0; i < LED_STRIPE_REAR_ON; i++)
-	{
-		pixel = &rearLeftAnimation->animationStep->Pixels[(currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED];
-		rearLeftStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
-
-		pixel = &rearRightAnimation->animationStep->Pixels[(currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED];
-		rearRightStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
-	}
-#else
 	for (uint8_t i = 0; i < LED_STRIPE_REAR_ON; i++)
 	{
 		// Left
-		pixel = &(rearLeftAnimation->animationStep->Pixels[0]);
+		pixel = &(rearLeftAnimation->animationStep->Pixels);
 		rearLeftStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
 		
 		// Right
-		pixel = &(rearRightAnimation->animationStep->Pixels[0]);
+		pixel = &(rearRightAnimation->animationStep->Pixels);
 		rearRightStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
 	}
-#endif
 }
 
 /// <summary>
@@ -243,7 +224,9 @@ inline void SceneManagerClass::TurnLeft()
 {
 	rearLeftAnimation = AnimationPlayer::GetTurn_Rear();
 
-	if (currentState == STATE_LIGHT_ON)
+	// Enable Rear Right animation for light mode
+	if (currentState == STATE_LIGHT_ON ||
+		currentState == STATE_LIGHT_AND_TURN_RIGHT)
 	{
 		rearRightAnimation = AnimationPlayer::GetTurnLightOn_Rear();
 	}
@@ -263,7 +246,9 @@ inline void SceneManagerClass::TurnRight()
 {
 	rearRightAnimation = AnimationPlayer::GetTurn_Rear();
 
-	if (currentState == STATE_LIGHT_ON)
+	// Enable Rear Left animation for light mode
+	if (currentState == STATE_LIGHT_ON ||
+		currentState == STATE_LIGHT_AND_TURN_LEFT)
 	{
 		rearLeftAnimation = AnimationPlayer::GetTurnLightOn_Rear();
 	}
@@ -284,6 +269,7 @@ inline void SceneManagerClass::TurnRight()
 void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightButton)
 {
 	unsigned long timer = millis();
+	bool extendState = false;
 
 	// Check transition candidates based on the Button pressed
 	switch (currentState)
@@ -324,8 +310,30 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		break;
 
 	case STATE_TURN_LEFT:
+		if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			newState = STATE_TURN_RIGHT;
+		}
+		else if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			extendState = true;
+		}
+		else if (timer - timerStart > timerDuration)
+		{
+			newState = STATE_LIGHT_OFF;
+		}
+		break;
+
 	case STATE_TURN_RIGHT:
-		if (timer - timerStart > timerDuration)
+		if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			newState = STATE_TURN_LEFT;
+		}
+		else if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			extendState = true;
+		}
+		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_OFF;
 		}
@@ -364,8 +372,30 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 		break;
 
 	case STATE_LIGHT_AND_TURN_LEFT:
+		if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			newState = STATE_LIGHT_AND_TURN_RIGHT;
+		}
+		else if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			extendState = true;
+		}
+		else if (timer - timerStart > timerDuration)
+		{
+			newState = STATE_LIGHT_ON;
+		}
+		break;
+
 	case STATE_LIGHT_AND_TURN_RIGHT:
-		if (timer - timerStart > timerDuration)
+		if (leftButton == SHORT_PRESSURE && rightButton == RELEASED)
+		{
+			newState = STATE_LIGHT_AND_TURN_LEFT;
+		}
+		else if (leftButton == RELEASED && rightButton == SHORT_PRESSURE)
+		{
+			extendState = true;
+		}
+		else if (timer - timerStart > timerDuration)
 		{
 			newState = STATE_LIGHT_ON;
 		}
@@ -373,7 +403,8 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 	}
 
 	// Stay in current state nothing else to do
-	if (currentState == newState) 
+	if (currentState == newState || 
+		extendState == false) 
 	{
 		return;
 	}
@@ -390,26 +421,36 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 
 	case STATE_TURN_LEFT:
 	case STATE_LIGHT_AND_TURN_LEFT:
-		// Enable timer
+		// Enable timer and extend timer on extendState
 		timerStart = timer;
 		timerDuration = STATE_TURN_DURATION;
-		// Start turn left animation
-		TurnLeft();
+		// Start turn left animation only if required
+		if (extendState == false)
+		{
+			TurnLeft();
+		}
 		break;
 
 	case STATE_TURN_RIGHT:
 	case STATE_LIGHT_AND_TURN_RIGHT:
-		// Enable timer
+		// Enable timer and extend timer on extendState
 		timerStart = timer;
 		timerDuration = STATE_TURN_DURATION;
-		// Start turn right animation
-		TurnRight();
+		// Start turn right animation only if required
+		if (extendState == false)
+		{
+			TurnRight();
+		}
 		break;
 
 	case STATE_LIGHT_ON_LOCK:
 	case STATE_LIGHT_ON:
 		// Turn light On
 		LightOn();
+		break;
+
+	case STATE_UNDEFINED:
+		// Leave empty for compiler complaints
 		break;
 	}
 

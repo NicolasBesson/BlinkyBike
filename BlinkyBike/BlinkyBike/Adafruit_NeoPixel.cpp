@@ -36,7 +36,7 @@
 
 // Constructor when length, pin and type are known at compile-time:
 Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
-  brightness(0), pixels(NULL), endTime(0), begun(false)
+	begun(false), brightness(0), pixels(NULL), endTime(0)
 {
   updateType(t);
   updateLength(n);
@@ -49,8 +49,8 @@ Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, neoPixelType t) :
 // command.  If using this constructor, MUST follow up with updateType(),
 // updateLength(), etc. to establish the strand type, length and pin number!
 Adafruit_NeoPixel::Adafruit_NeoPixel() :
-  pin(-1), brightness(0), pixels(NULL), endTime(0), begun(false),
-  numLEDs(0), numBytes(0), rOffset(1), gOffset(0), bOffset(2), wOffset(1)
+  begun(false), numLEDs(0), numBytes(0), pin(-1), brightness(0), pixels(NULL), 
+   rOffset(NEO_GRB_RED_OFFSET), gOffset(NEO_GRB_GREEN_OFFSET), bOffset(NEO_GRB_BLUE_OFFSET), wOffset(1), endTime(0)
 #ifdef NEO_KHZ400
   , is800KHz(true)
 #endif
@@ -1073,13 +1073,13 @@ void Adafruit_NeoPixel::setPixelColor(
 void Adafruit_NeoPixel::setPixelColor(
 	uint16_t n, uint8_t r, uint8_t g, uint8_t b) {
 
-	if (n < numLEDs) {
-		uint8_t *p;
-		p = &pixels[n * 3];    // 3 bytes per pixel
-		p[rOffset] = r;        // R,G,B always stored
-		p[gOffset] = g;
-		p[bOffset] = b;
-	}
+  uint8_t *p;
+  p = &pixels[n * 3];    // 3 bytes per pixel
+  // Offset ordered for compiler 'optimisation'
+  p[NEO_GRB_GREEN_OFFSET] = g;
+  p[NEO_GRB_RED_OFFSET] = r;
+  p[NEO_GRB_BLUE_OFFSET] = b;
+
 }
 #endif
 
@@ -1110,18 +1110,23 @@ void Adafruit_NeoPixel::setPixelColor(uint16_t n, uint32_t c) {
 }
 #endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 // Convert separate R,G,B into packed 32-bit RGB color.
 // Packed format is always RGB, regardless of LED strand color order.
 uint32_t Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b) {
   return ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 // Convert separate R,G,B,W into packed 32-bit WRGB color.
 // Packed format is always WRGB, regardless of LED strand color order.
 uint32_t Adafruit_NeoPixel::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 // Query color from previously-set pixel (returns packed 32-bit RGB value)
 uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
   if(n >= numLEDs) return 0; // Out of bounds, return no color.
@@ -1160,18 +1165,24 @@ uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
     }
   }
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 // Returns pointer to pixels[] array.  Pixel data is stored in device-
 // native format and is not translated here.  Application will need to be
 // aware of specific pixel data format and handle colors appropriately.
 uint8_t *Adafruit_NeoPixel::getPixels(void) const {
   return pixels;
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 uint16_t Adafruit_NeoPixel::numPixels(void) const {
   return numLEDs;
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 // Adjust output brightness; 0=darkest (off), 255=brightest.  This does
 // NOT immediately affect what's currently displayed on the LEDs.  The
 // next call to show() will refresh the LEDs at this level.  However,
@@ -1208,12 +1219,17 @@ void Adafruit_NeoPixel::setBrightness(uint8_t b) {
     brightness = newBrightness;
   }
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 //Return the brightness value
 uint8_t Adafruit_NeoPixel::getBrightness(void) const {
   return brightness - 1;
 }
+#endif
 
+#ifndef BLINKY_BIKE_OPTIMIZATION
 void Adafruit_NeoPixel::clear() {
   memset(pixels, 0, numBytes);
 }
+#endif

@@ -55,7 +55,7 @@ struct PixelColor
 struct AnimationStepFront
 {
 	unsigned long StepDuration;	// Step Duration in ms
-	PixelColor Pixels[1];		// Step Pixels color
+	PixelColor Pixels;			// Step Pixels color
 };
 
 /// <summary>
@@ -64,7 +64,7 @@ struct AnimationStepFront
 struct AnimationStepRear
 {
 	unsigned long StepDuration;	// Step Duration in ms
-	PixelColor Pixels[1];		// Step Pixels color
+	PixelColor Pixels;			// Step Pixels color
 };
 
 /// <summary>

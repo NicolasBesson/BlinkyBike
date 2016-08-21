@@ -4,6 +4,10 @@ When ridding for your commute or for pleasure, being visible on the road is alwa
 
 The Blinky Bike project is the ultimate solution to add light system to any Bike, (and electric Bike) using a 5V power bank or the onboard bike Battery. It relies on NeoPixel LEDs (WS2812) flexible stripes, for the Front and Rear. The system based on an Atmel ATtiny 85 micro-controller, and allows different light modes that can be selected using two water proof switches (One for the Left hand and one for the Right hand).
 
+## Project Award
+The Blinky Bike project has been awarded of the **First Prize** in June 2016 for the Instructables' Bike contest 2016.
+You can check out the Instructables article [here](http://www.instructables.com/id/Blinky-Bike-a-Light-System-for-Bikes/).
+
 ## Device Usage
 The device Left and Right buttons are the only interface with the system allowing to :
 
@@ -49,7 +53,7 @@ The types are described as following :
 struct AnimationStepFront
 {
 	unsigned long StepDuration;	// Step Duration in ms
-	PixelColor Pixels[1];		// Step Pixels color
+	PixelColor Pixels;		// Step Pixels color
 };
 
 struct AnimationFront
@@ -61,17 +65,8 @@ struct AnimationFront
 
 And an animation is described as following :
 ```c
-AnimationStepFront stepWhiteFront = { 150,
-{ 
-	COLOR_PIXEL(WHITE) 
-}
-};
-
-AnimationStepFront stepBlackFront = { 50,
-{ 
-	COLOR_PIXEL(BLACK) 
-}
-};
+AnimationStepFront stepWhiteFront = { 150, COLOR_PIXEL(WHITE) };
+AnimationStepFront stepBlackFront = { 50, COLOR_PIXEL(BLACK) };
 
 /* Animations for Front */
 AnimationFront animationFrontOff = { &stepBlackFront, &animationFrontOff };
@@ -114,13 +109,16 @@ The Neopixel device requires specific timings that can't be reach when using the
 Before starting some tools are required :
 
 * [Arduino IDE](https://www.arduino.cc/en/Main/Software)
-* [Visual Studio Community 2013 with Update 5](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)
-* [VisualMicro](http://www.visualmicro.com/) a VS2013 plugin for Arduino development
+* Visual Studio 2015 Community Edition (and other flavors)
+* [VisualMicro](http://www.visualmicro.com/) a Visual Studio plugin for Arduino development
 * USBTinyISP programer
+
+Install Visual Studio 2015, and make sure to select the support for C++ (Visual C++) during installation.
 
 Install the Arduino IDE application, and launch the application. You first need to add the support of the ATtiny familly as by default only Arduino based platforms are supported. From the File menu, select the Preferences submenu, and then find the “Additional Boards Manager URLs” field near the bottom of the dialog. Add the following url : https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json
 You can then validate and close the preferences dialog box. Then from the Tools menu you have to :
 
+* Select the Board entry and choose **Board Manager** to add attiny board support.
 * Select **ATtiny** as Board
 * Select **ATtiny85** as Processor
 * Select **8MHz (Internal)** as Clock
@@ -142,11 +140,27 @@ Then validate the configuration window and access the Visual Studio IDE. From vM
 The development environment is now ready for building and flashing.
 
 ## Compilation
-The source code compiles in Visual Studio 2013 and 2015 through the VisualMicro plugin.
+The source code compiles in Visual Studio 2015 using the VisualMicro plugin and Arduino IDE (cf Tools chapter for installation details).
+To compile the project you have to :
+
+* Open the BlinkyBike\BlinkyBike.sln solution file
+* From Visual Studio, select **Build** menu and choose **Configuration Manager** entry
+* From the Configuration Manager window, select **Release** in the **Active solution confgiuration** drop box
+* Click on the Close button to close the Configuration Manager window
+* From **Build** menu select **Build Solution** entry
+* Wait few seconds (usualy less than 30 seconds)
+* Ensure that the last output from the Output window is : *Program size: 5,476 bytes (used 67% of a 8,192 byte maximum) (17.83 secs)* (values may vary)
+
+Then you are ready to program your ATtiny 85.
 
 ## Programming
-The ATTiny 85 micro controller can be programmed using the USBTinyISP programmer.
+The ATtiny 85 micro controller can be programmed using the USBTinyISP programmer. The programmer is visible through a serial com port. You need to identify the associate port index (using Windows Device Manager) in order configure the Visual Micro plugin. 
+
 ![USB Tiny ISP](/Pictures/USBtinyISP.jpg "USB Tiny ISP")
+
+You need to wire the programmer as following:
+
+![USB Tiny ISP with ATtiny85](/Pictures/USBtinyISP_attiny85_connection.png "USB Tiny ISP with ATtiny85")
 
 # Assembling
 ## Left and Right Button
@@ -168,7 +182,7 @@ Once done, and enclosed correctly the tube is small enough to get fixed under th
 ![BlinkyBike Casing](/Pictures/BlinkyBike_Casing.jpg "Casing")
 
 ## Battery holder
-The device is 5 Volts powered, so a USB Power Bank of 10000 mAh is a perfect solution for 3 weeks of daily commute. You can find small devices at you favorite store.
+The device is 5 Volts powered, so a USB Power Bank of 10000 mAh is a perfect solution for 3 weeks of daily commute. You can find small battery devices at your favorite store.
 
 ## Full System
 ![BlinkyBike Assembled](/Pictures/BlinkyBike_Assembled.jpg "Assembled")
