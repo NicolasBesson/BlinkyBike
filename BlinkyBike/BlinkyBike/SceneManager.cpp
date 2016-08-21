@@ -224,7 +224,9 @@ inline void SceneManagerClass::TurnLeft()
 {
 	rearLeftAnimation = AnimationPlayer::GetTurn_Rear();
 
-	if (currentState == STATE_LIGHT_ON)
+	// Enable Rear Right animation for light mode
+	if (currentState == STATE_LIGHT_ON ||
+		currentState == STATE_LIGHT_AND_TURN_RIGHT)
 	{
 		rearRightAnimation = AnimationPlayer::GetTurnLightOn_Rear();
 	}
@@ -244,7 +246,9 @@ inline void SceneManagerClass::TurnRight()
 {
 	rearRightAnimation = AnimationPlayer::GetTurn_Rear();
 
-	if (currentState == STATE_LIGHT_ON)
+	// Enable Rear Left animation for light mode
+	if (currentState == STATE_LIGHT_ON ||
+		currentState == STATE_LIGHT_AND_TURN_LEFT)
 	{
 		rearLeftAnimation = AnimationPlayer::GetTurnLightOn_Rear();
 	}
