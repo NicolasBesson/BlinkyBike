@@ -60,7 +60,7 @@ class SceneManagerClass
 	 unsigned long timerDuration = 0;					// Timer Duration
 	 unsigned long longPressTimerStart = 0;				// Long pressure Timer
 	 unsigned long longPressDebounceTimerDuration = 0;	// Long pressure Timer Duration
-	 uint8_t sceneStatus = 0;								// Internal Scene status for stripes updates detections
+	 uint8_t sceneStatus = 0;							// Internal Scene status for stripes updates detections
 
 	 const AnimationFront *frontAnimation = NULL;		// Front animation
 	 const AnimationRear *rearLeftAnimation = NULL;		// Rear Left animation

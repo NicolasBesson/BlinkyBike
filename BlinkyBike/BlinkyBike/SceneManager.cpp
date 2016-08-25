@@ -161,8 +161,8 @@ void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_N
 	rearRightStripe->setPixelColor(currentRearLEDIndex, pixelTemp1->Red, pixelTemp1->Green, pixelTemp1->Blue);
 
 	// Move forward pixel index
-	currentFrontLEDIndex = (++currentFrontLEDIndex) % LED_STRIPE_FRONT_NUMLED;
-	currentRearLEDIndex = (++currentRearLEDIndex) % LED_STRIPE_REARLEFT_NUMLED;
+	currentFrontLEDIndex = (currentFrontLEDIndex + 1) % LED_STRIPE_FRONT_NUMLED;
+	currentRearLEDIndex = (currentRearLEDIndex + 1) % LED_STRIPE_REARLEFT_NUMLED;
 
 	// Update pixels
 	pixelTemp1 = &(frontAnimation->animationStep->Pixels);
