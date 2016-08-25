@@ -81,9 +81,6 @@
     <ClInclude Include="Button.h">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClInclude Include="MainApp.h">
-      <FileType>CppCode</FileType>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -100,7 +97,6 @@
     <ClCompile Include="AnimationPlayer.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
