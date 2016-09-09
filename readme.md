@@ -13,15 +13,16 @@ The device Left and Right buttons are the only interface with the system allowin
 
 * Turn ON and OFF the light system
 * Turn Left and Right indicator
+* Extend the Left and Right indicator blink duration
 
 Switches operations are :
 
-| Left Button | Right Button | Action                |
-|:-----------:|:------------:|:----------------------|
-| Release     | Release      | Nothing               |
-| Short       | Release      | Turn Left             |
-| Release     | Short        | Turn Right            |
-| Long        | Long         | Turn Light ON or OFF  |
+| Left Button | Right Button | Action                                    |
+|:-----------:|:------------:|:-----------------------------------------:|
+| Release     | Release      | Nothing                                   |
+| Short       | Release      | Turn Left or extend turn light indicator  |
+| Release     | Short        | Turn Right or extend turn light indicator |
+| Long        | Long         | Turn Light ON or OFF                      |
 
 ![BlinkyBike Left Button](/Pictures/Button_Left1.jpg "Left Button") ![BlinkyBike Right Button](/Pictures/Button_Right1.jpg "Right Button")
 
@@ -34,7 +35,7 @@ The Front and Rear LEDs stripes are composed of a total of 30 LEDs, 8 for the Fr
 ## Power consideration
 The system is designed to be power friendly with the e-Bike battery, as the battery might not be able to provide the full power required to have all the LEDs turned on at the same time. As the NeoPixel RGB LEDs (WS2812) consumes 20 mA per color channel, with a total of 60 mA (3 channels * 20 mA) when the LED is turned full bright White color (Red = 255, Green = 255, Blue = 255). The challenge is to not be over 500 mA (power limit supplied by the Battery on my e-Bike). I have applied a secure level set to 450 mA maximum. Leading then to a limit of 7 LEDs active at a time.
 Having only 7 LEDs is really limitating for a bike light system, so the solution is to multiplex the LEDs and ensure that only those 7 LEDs are on, while all the others are off. If the multiplexing switch is performed fast enough, it should be possible to make it not visible for a Human eye. 
-Therefore, the ATTiny firmware is taking care of the current limitation by switching on and off the LEDs, remaining only 7 LEDs on at a time, giving a maximum power consumption for the LEDs of 420 mA.
+Therefore, the ATtiny firmware is taking care of the current limitation by switching on and off the LEDs, remaining only 7 LEDs on at a time, giving a maximum power consumption for the LEDs of 420 mA.
 
 This can be adjusted by editing the [Stripes.h](/BlinkyBike/BlinkyBike/Stripes.h) file :
 ```c
@@ -82,7 +83,7 @@ The hardware is minimalistic as the Neopixel and ATTiny are embedding all the di
 
 The Blinky Bike system is built using the following hardware :
 
-* AtTiny85
+* ATtiny85
 * NeoPixel Stripes
  * 1x 8 LEDs
  * 2x 11 LEDs
@@ -97,13 +98,13 @@ You won't find any PCB layout, as I'm using through hole prototyping board, deve
 
 
 # Building the Software
-The ATTiny 85 is a really cool Micro Controller that have 8 KB of Flash and 512 B of RAM to run any kind of C or C++ software. This gives some space to run a simple software and for this reason some optimization are required.
+The ATtiny 85 is a really cool Micro Controller that have 8 KB of Flash and 512 B of RAM to run any kind of C or C++ software. This gives some space to run a simple software and for this reason some optimization are required.
 
 The project has been developed in C++ (C++11) in order to reuse and give more flexibility in case of development of new features. It is required to use the VisualMicro extension for Visual Studio 2013 in order to build the project.
 
 AdaFruit is providing a library to drive the Neopixel devices, that you can directly integrate in your Arduino IDE. But this code has been designed to support various modes in order to address major use cases. The source code repository is containing an optimized version that works only with the Neopixels that I have selected and might not work if you choose a different one.
 
-The Neopixel device requires specific timings that can't be reach when using the ATTiny 85 in 4 MHz (its default configuration) and therefore requires to use the 8 Mhz mode. So it is mandatory to burn the correct fuses in the ATTIny before deploying the firmware. This can be done from the Arduino IDE by selecting the ATTiny 85 target and selecting the clock frequency to 8 MHz (internal).
+The Neopixel device requires specific timings that can't be reach when using the ATtiny 85 in 4 MHz (its default configuration) and therefore requires to use the 8 Mhz mode. So it is mandatory to burn the correct fuses in the ATtiny before deploying the firmware. This can be done from the Arduino IDE by selecting the ATtiny 85 target and selecting the clock frequency to 8 MHz (internal).
 
 ## Tools
 Before starting some tools are required :
@@ -118,7 +119,7 @@ Install Visual Studio 2015, and make sure to select the support for C++ (Visual 
 Install the Arduino IDE application, and launch the application. You first need to add the support of the ATtiny familly as by default only Arduino based platforms are supported. From the File menu, select the Preferences submenu, and then find the “Additional Boards Manager URLs” field near the bottom of the dialog. Add the following url : https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json
 You can then validate and close the preferences dialog box. Then from the Tools menu you have to :
 
-* Select the Board entry and choose **Board Manager** to add attiny board support.
+* Select the Board entry and choose **Board Manager** to add ATtiny board support.
 * Select **ATtiny** as Board
 * Select **ATtiny85** as Processor
 * Select **8MHz (Internal)** as Clock
