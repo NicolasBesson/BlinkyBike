@@ -41,6 +41,9 @@ void SceneManagerClass::begin()
 	// Timer duration configuration 
 	longPressDebounceTimerDuration = LONG_PRESS_DEBOUNCE_DURATION;
 	longPressTimerStart = millis();
+
+	// Turn off the Light
+	LightOff();
 }
 
 /// <summary>
@@ -150,8 +153,8 @@ unsigned long SceneManagerClass::getSceneStepDurationRearRight() const
 /// <param name="rearRightStripe">Rear Right LED stripe</param>
 void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_NeoPixel *rearLeftStripe, Adafruit_NeoPixel *rearRightStripe)
 {
-	const PixelColor *pixelTemp1 = NULL;
-	const PixelColor *pixelTemp2 = NULL;
+	volatile const PixelColor *pixelTemp1 = NULL;
+	volatile const PixelColor *pixelTemp2 = NULL;
 
 	// Clear current index light
 	pixelTemp1 = &pixelOff;
