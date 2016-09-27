@@ -26,7 +26,7 @@
 /// <summary>
 /// Initialize the SceneManager
 /// </summary>
-void SceneManagerClass::init()
+void SceneManagerClass::begin()
 {
 	// Clear Original status
 	sceneStatus = 0;
@@ -34,7 +34,7 @@ void SceneManagerClass::init()
 	// Default state
 	currentState = STATE_UNDEFINED;
 
-	// Current displyed LED index
+	// Current displayed LED index
 	currentFrontLEDIndex = 0;
 	currentRearLEDIndex = 0;
 

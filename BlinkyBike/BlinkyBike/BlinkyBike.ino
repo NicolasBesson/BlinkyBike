@@ -110,6 +110,9 @@ void setup() {
 	frontLight.show();
 	rearLeftLight.show();
 	rearRightLight.show();
+
+	// Initialize the SceneManager
+	SceneManager.begin();
 }
 
 // the loop function runs over and over again until power down or reset

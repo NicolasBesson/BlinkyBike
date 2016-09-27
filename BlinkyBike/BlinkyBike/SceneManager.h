@@ -74,7 +74,7 @@ class SceneManagerClass
 	 /// <summary>
 	 /// Initialize the SceneManager
 	 /// </summary>
-	void init();
+	void begin();
 
 	/// <summary>
 	/// Update the Scene based on button ButtonState
