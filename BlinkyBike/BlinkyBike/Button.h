@@ -1,6 +1,6 @@
 /////////////////////////////////   License  //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-// Copyright 2015 Nicolas BESSON - BeeAtHome
+// Copyright 2015 - 2017 Nicolas BESSON - BeeAtHome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
