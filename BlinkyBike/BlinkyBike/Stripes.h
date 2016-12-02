@@ -34,6 +34,6 @@
 
 // Number of LED
 #define LED_STRIPE_FRONT_ON				3
-#define LED_STRIPE_REAR_ON				2
+#define LED_STRIPE_REAR_ON				6
 
 #endif // _STRIPES_H
