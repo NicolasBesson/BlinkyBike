@@ -69,6 +69,15 @@ Button rightButton = Button(BUTTON_RIGHT_PIN, BUTTON_DEBOUNCE_TIMEOUT, BUTTON_HO
 // Timers
 Timer appTimer = Timer();
 
+// CPU Frequency checking
+// The system requires that CPU frequency must be greater or equal to 8Mhz (suggested
+// to 16Mhz) in order to handle correctly the WS2812 RGB Leds and avoid visual 
+// flickering due to LED multiplexing to reduce the overal power consumption
+#if (F_CPU < 8000000UL)
+	#error CPU Frequency should be equal or greater than 8Mhz
+#elif (F_CPU < 16000000UL)
+	#warning CPU Frequency could be increased to 16Mhz for better visual rendering
+#endif
 
 /// <summary>
 /// Front Timer callback function
