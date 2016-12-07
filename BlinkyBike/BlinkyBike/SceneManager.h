@@ -54,26 +54,26 @@ enum SceneState : uint8_t
 class SceneManagerClass
 {
  private:
-	 enum SceneState currentState = STATE_UNDEFINED;	// Current State
-	 enum SceneState newState = STATE_UNDEFINED;		// New Reached State
-	 unsigned long timerStart = 0;						// Timer
-	 unsigned long timerDuration = 0;					// Timer Duration
-	 unsigned long longPressTimerStart = 0;				// Long pressure Timer
-	 unsigned long longPressDebounceTimerDuration = 0;	// Long pressure Timer Duration
-	 uint8_t sceneStatus = 0;							// Internal Scene status for stripes updates detections
+	enum SceneState currentState = STATE_UNDEFINED;	// Current State
+	enum SceneState newState = STATE_UNDEFINED;		// New Reached State
+	unsigned long timerStart = 0;						// Timer
+	unsigned long timerDuration = 0;					// Timer Duration
+	unsigned long longPressTimerStart = 0;				// Long pressure Timer
+	unsigned long longPressDebounceTimerDuration = 0;	// Long pressure Timer Duration
+	uint8_t sceneStatus = 0;							// Internal Scene status for stripes updates detections
 
-	 const AnimationFront *frontAnimation = NULL;		// Front animation
-	 const AnimationRear *rearLeftAnimation = NULL;		// Rear Left animation
-	 const AnimationRear *rearRightAnimation = NULL;	// Rear Right animation
-	 
-	 uint8_t currentFrontLEDIndex = 0;					// Led Index for Front animation
-	 uint8_t currentRearLEDIndex = 0;					// Led Index for Rear animation
+	const AnimationFront *frontAnimation = NULL;		// Front animation
+	const AnimationRear *rearLeftAnimation = NULL;		// Rear Left animation
+	const AnimationRear *rearRightAnimation = NULL;	// Rear Right animation
+	
+	uint8_t currentFrontLEDIndex = 0;					// Led Index for Front animation
+	uint8_t currentRearLEDIndex = 0;					// Led Index for Rear animation
 
 
  public:
-	 /// <summary>
-	 /// Initialize the SceneManager
-	 /// </summary>
+	/// <summary>
+	/// Initialize the SceneManager
+	/// </summary>
 	void begin();
 
 	/// <summary>

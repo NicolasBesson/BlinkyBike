@@ -402,7 +402,7 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 	}
 
 	// Stay in current state nothing else to do
-	if (currentState == newState || 
+	if (currentState == newState &&
 		extendState == false) 
 	{
 		return;
