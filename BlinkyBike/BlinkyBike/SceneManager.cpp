@@ -26,7 +26,7 @@
 /// <summary>
 /// Initialize the SceneManager
 /// </summary>
-void SceneManagerClass::init()
+void SceneManagerClass::begin()
 {
 	// Clear Original status
 	sceneStatus = 0;
@@ -34,13 +34,16 @@ void SceneManagerClass::init()
 	// Default state
 	currentState = STATE_UNDEFINED;
 
-	// Current displyed LED index
+	// Current displayed LED index
 	currentFrontLEDIndex = 0;
 	currentRearLEDIndex = 0;
 
 	// Timer duration configuration 
 	longPressDebounceTimerDuration = LONG_PRESS_DEBOUNCE_DURATION;
 	longPressTimerStart = millis();
+
+	// Turn off the Light
+	LightOff();
 }
 
 /// <summary>
@@ -150,41 +153,37 @@ unsigned long SceneManagerClass::getSceneStepDurationRearRight() const
 /// <param name="rearRightStripe">Rear Right LED stripe</param>
 void SceneManagerClass::updateStripes(Adafruit_NeoPixel *frontStripe, Adafruit_NeoPixel *rearLeftStripe, Adafruit_NeoPixel *rearRightStripe)
 {
-	const PixelColor *pixel;
-	// Front
-	// Clear current index light
-	pixel = &pixelOff;
-	frontStripe->setPixelColor(currentFrontLEDIndex, pixel->Red, pixel->Green, pixel->Blue);
+	volatile const PixelColor *pixelTemp1 = NULL;
+	volatile const PixelColor *pixelTemp2 = NULL;
 
-	// Move forward
-	currentFrontLEDIndex = (++currentFrontLEDIndex) % LED_STRIPE_FRONT_NUMLED;
+	// Clear current index light
+	pixelTemp1 = &pixelOff;
+
+	frontStripe->setPixelColor(currentFrontLEDIndex, pixelTemp1->Red, pixelTemp1->Green, pixelTemp1->Blue);
+	rearLeftStripe->setPixelColor(currentRearLEDIndex, pixelTemp1->Red, pixelTemp1->Green, pixelTemp1->Blue);
+	rearRightStripe->setPixelColor(currentRearLEDIndex, pixelTemp1->Red, pixelTemp1->Green, pixelTemp1->Blue);
+
+	// Move forward pixel index
+	currentFrontLEDIndex = (currentFrontLEDIndex + 1) % LED_STRIPE_FRONT_NUMLED;
+	currentRearLEDIndex = (currentRearLEDIndex + 1) % LED_STRIPE_REARLEFT_NUMLED;
 
 	// Update pixels
-	pixel = &(frontAnimation->animationStep->Pixels);
+	pixelTemp1 = &(frontAnimation->animationStep->Pixels);
 	for (uint8_t i = 0; i < LED_STRIPE_FRONT_ON; i++)
 	{
-		frontStripe->setPixelColor((currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
+		frontStripe->setPixelColor((currentFrontLEDIndex + i) % LED_STRIPE_FRONT_NUMLED, pixelTemp1->Red, pixelTemp1->Green, pixelTemp1->Blue);
 	}
 
-	// Rear Left and Right
-	// Clear current index light
-	pixel = &pixelOff;
-	rearLeftStripe->setPixelColor(currentRearLEDIndex, pixel->Red, pixel->Green, pixel->Blue);
-	rearRightStripe->setPixelColor(currentRearLEDIndex, pixel->Red, pixel->Green, pixel->Blue);
-
-	// Move forward
-	currentRearLEDIndex = (++currentRearLEDIndex) % LED_STRIPE_REARLEFT_NUMLED;
-
 	// Update pixels for rear left and right
+	pixelTemp1 = &(rearLeftAnimation->animationStep->Pixels);
+	pixelTemp2 = &(rearRightAnimation->animationStep->Pixels);
 	for (uint8_t i = 0; i < LED_STRIPE_REAR_ON; i++)
 	{
 		// Left
-		pixel = &(rearLeftAnimation->animationStep->Pixels);
-		rearLeftStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
+		rearLeftStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARLEFT_NUMLED, pixelTemp1->Red, pixelTemp1->Green, pixelTemp1->Blue);
 		
 		// Right
-		pixel = &(rearRightAnimation->animationStep->Pixels);
-		rearRightStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED, pixel->Red, pixel->Green, pixel->Blue);
+		rearRightStripe->setPixelColor((currentRearLEDIndex + i) % LED_STRIPE_REARRIGHT_NUMLED, pixelTemp2->Red, pixelTemp2->Green, pixelTemp2->Blue);
 	}
 }
 
@@ -403,7 +402,7 @@ void SceneManagerClass::updateScene(ButtonState leftButton, ButtonState rightBut
 	}
 
 	// Stay in current state nothing else to do
-	if (currentState == newState || 
+	if (currentState == newState &&
 		extendState == false) 
 	{
 		return;
