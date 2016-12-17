@@ -5,6 +5,8 @@ When ridding for your commute or for pleasure, being visible on the road is alwa
 The Blinky Bike project is the ultimate solution to add light system to any Bike, (and electric Bike) using a 5V power bank or the onboard bike Battery. It relies on NeoPixel LEDs (WS2812) flexible stripes, for the Front and Rear. The system based on an Atmel ATtiny 85 micro-controller, and allows different light modes that can be selected using two water proof switches (One for the Left hand and one for the Right hand).
 
 ## Project Award
+![Instructables Logo](http://www.instructables.com/static/img/header/header-logo.png "Instructables Logo") 
+
 The Blinky Bike project has been awarded of the **First Prize** in June 2016 for the Instructables' Bike contest 2016.
 You can check out the Instructables article [here](http://www.instructables.com/id/Blinky-Bike-a-Light-System-for-Bikes/).
 
@@ -33,15 +35,16 @@ The Front and Rear LEDs stripes are composed of a total of 30 LEDs, 8 for the Fr
 ![BlinkyBike Schematic](/Pictures/FrontBack_Stripes_On.jpg "Front and Rear Stripes")
 
 ## Power consideration
-The system is designed to be power friendly with the e-Bike battery, as the battery might not be able to provide the full power required to have all the LEDs turned on at the same time. As the NeoPixel RGB LEDs (WS2812) consumes 20 mA per color channel, with a total of 60 mA (3 channels * 20 mA) when the LED is turned full bright White color (Red = 255, Green = 255, Blue = 255). The challenge is to not be over 500 mA (power limit supplied by the Battery on my e-Bike). I have applied a secure level set to 450 mA maximum. Leading then to a limit of 7 LEDs active at a time.
-Having only 7 LEDs is really limitating for a bike light system, so the solution is to multiplex the LEDs and ensure that only those 7 LEDs are on, while all the others are off. If the multiplexing switch is performed fast enough, it should be possible to make it not visible for a Human eye. 
-Therefore, the ATtiny firmware is taking care of the current limitation by switching on and off the LEDs, remaining only 7 LEDs on at a time, giving a maximum power consumption for the LEDs of 420 mA.
+The system is designed to be power friendly with the e-Bike battery, as the battery might not be able to provide the full power required to have all the LEDs turned on at the same time. As the NeoPixel RGB LEDs (WS2812) consumes 20 mA per color channel, with a total of 60 mA (3 channels * 20 mA) when the LED is turned full bright White color (Red = 255, Green = 255, Blue = 255). The challenge is to not consume over than 500 mA (power limit supplied by the Battery on my e-Bike). For this, I have applied a secure level set to 450 mA as maximum. Leading then to a limit of 7 LEDs at Full White Bright active at a time.
+Having only 7 LEDs is really limitating for a bike light system, the solution is then to multiplex the LEDs and ensure that only those 7 LEDs are on at time, while all the others are off. If the multiplexing switch is performed fast enough, it should be possible to make it not visible for a Human eye.
+This upper limit is valid when the color of all the LEDs is set to White color with 100% intensity. With traditional road light of cars, for exemple, with a White color for the head light and Red color for the rear lights, then this limits of 7 LEDs is broken, as White is Red, Grenn and Blue channels set to maximum, and Red color means only a Red channel set to maximum, reduce the total power consumption of the Red LED to 20 mA.
+Therefore, the ATtiny firmware is taking care of the current limitation by switching on and off the LEDs, remaining only 9 LEDs on at a time, giving a maximum power consumption for the LEDs of XXX mA.
 
 This can be adjusted by editing the [Stripes.h](/BlinkyBike/BlinkyBike/Stripes.h) file :
 ```c
 // Number of LED
 #define LED_STRIPE_FRONT_ON   3
-#define LED_STRIPE_REAR_ON    2
+#define LED_STRIPE_REAR_ON    6
 ```
 
 ## Light animation
@@ -122,7 +125,7 @@ You can then validate and close the preferences dialog box. Then from the Tools 
 * Select the Board entry and choose **Board Manager** to add ATtiny board support.
 * Select **ATtiny** as Board
 * Select **ATtiny85** as Processor
-* Select **8MHz (Internal)** as Clock
+* Select **16MHz (Internal)** as Clock or **8MHz (Internal)** as Clock
 * Select **USBtinyISP** as Programmer
 
 Close the **Arduino IDE** application and install the Visual Micro plugin for Visual Studio.
@@ -135,7 +138,7 @@ On first usage of Visual Micro, you have to configure the various parameters of 
 Then validate the configuration window and access the Visual Studio IDE. From vMicro menu :
 
 * Select **ATtiny w/ ATtiny85** as Board
-* Select **8MHz (Internal)** as Option2
+* Select **Internal 16MHz** or **Internal 8MHz** as Option2 (based on the Fuse configuration applied under Arduino IDE
 * Select **USBtinyISP** as Programmer
 
 The development environment is now ready for building and flashing.
@@ -190,6 +193,11 @@ The device is 5 Volts powered, so a USB Power Bank of 10000 mAh is a perfect sol
 
 
 # Revision History
+## V1.3 - 2016-12-31
+* Increment the number of LEDs set on at the same time
+* Increasing support for CPU frequency of 8Mhz and 16 Mhz (fuse and compilation options)
+* Reduced the visual flickering for the rear Light Stripes
+
 ## V1.2 - 2016-12-12
 * Adding timer animation extension while pressing on left button when left animation played (same for right)
 * Fix issue for Turn Left and Right light stays black after quick transitionning from Left to Right when in Light On 
